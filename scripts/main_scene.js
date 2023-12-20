@@ -22,24 +22,29 @@ class MainScene extends Phaser.Scene {
     create() {
          // 単体画像をシーンに追加(X座標,Y座標,画像名)
         this.add.image(400, 300, 'background');
-
         const Taro = this.physics.add.sprite(50, 50, 'Taro')
         const Hanako = this.physics.add.sprite(750, 400, 'Hanako')
+        let staticGroup = this.physics.add.staticGroup();
         for(let i=0; i<5; i++){
         let  randx = Phaser.Math.Between(25, 775) ;  // y は　50～750の間の値
         let randy =  Phaser.Math.Between(25, 425) ;  // y は　50～200の間の値
-        this.add.image(randx, randy , 'ORANGE'); }//ランダムな場所に生成
+        staticGroup.create(randx, randy , 'ORANGE'); 
+    }//ランダムな場所に生成
         for(let i=0; i<5; i++){
         let  randa = Phaser.Math.Between(25, 775) ;  // y は　50～750の間の値
         let randb =  Phaser.Math.Between(25, 425) ;  // y は　50～200の間の値
-        this.add.image(randa, randb , 'APPLE');} //ランダムな場所に生成
+        staticGroup.create(randa, randb , 'APPLE');
+        } //ランダムな場所に生成
         this.Taro = Taro
         this.Hanako = Hanako
-         
-        
+        this.physics.add.overlap(Taro, staticGroup, stopgame, null, this);
+        function stopgame(p){
+            this.physics.pause();
         }
+    }
+
      // 毎フレーム実行される繰り返し処理
-    update(time, delta) {
+    update(time, delta){
          // キーボードの情報を取
          let cursors = this.input.keyboard.createCursorKeys();
          if(cursors.up.isDown){
