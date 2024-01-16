@@ -37,12 +37,16 @@ class MainScene extends Phaser.Scene {
         } //ランダムな場所に生成
         this.Taro = Taro
         this.Hanako = Hanako
-        this.physics.add.overlap(Taro, staticGroup, stopgame, null, this);
-        function stopgame(p){
-            this.physics.pause();
-        }
-    }
 
+        this.physics.add.overlap(Taro, staticGroup, collectf, null, this);
+        function collectf(){
+        this.physics.pause(this.add.text(D_WIDTH/3,D_HEIGHT*1/3, 'Game Over!', { fontSize: '32px', fill: '#CDC' }));
+        }
+        this.physics.add.overlap(Hanako, staticGroup, collectf, null, this);
+        function collectf(){
+        this.physics.pause(this.add.text(D_WIDTH/3,D_HEIGHT*1/3, 'Game Over!', { fontSize: '32px', fill: '#CDC' }));
+    }
+    }
      // 毎フレーム実行される繰り返し処理
     update(time, delta){
          // キーボードの情報を取
@@ -70,5 +74,4 @@ class MainScene extends Phaser.Scene {
              this.Hanako.setVelocityY(0);// 縦方向の速度を0
          }
     }
-
 }
